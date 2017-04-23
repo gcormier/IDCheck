@@ -1,0 +1,24 @@
+service: lambda-rds
+
+provider:
+  name: aws
+  runtime: nodejs6.10
+  timeout: 30
+  vpc:
+    securityGroupIds:
+      - sg-1234
+    subnetIds:
+      - subnet-1234
+  stage: prod
+  region: eu-west-1
+  iamRoleStatements:
+    - Effect: "Allow"
+      Action:
+        - "logs:DescribeLogStreams"
+      Resource: "*"
+
+functions:
+  foo:
+    handler: handler.foo
+    events:
+      - schedule: rate(2 minutes)
